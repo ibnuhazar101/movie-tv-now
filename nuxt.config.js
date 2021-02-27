@@ -32,6 +32,7 @@ export default {
   plugins: [
   ],
 
+  router: { base: '/movie-tv-now' },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
