@@ -1,16 +1,26 @@
 <template>
-  <div> 
-    <h1 class="mov-title mt-3 text-right">Now on Cinema</h1>
-    <div class="movies">
-      <div v-for="(movie, idMovie) in dataMovies" :key="idMovie" class="movie-list" @click="openDetail(movie)">
-        <img :src="`http://image.tmdb.org/t/p/w500${movie.poster_path}`">
-        <div class="mov-title">
-          {{ movie.title }} ({{ changeDate(movie.release_date) }})
+  <div>
+    <div class="row justify-content-center">
+      <div class="col-md-3" id="trending">
+        <Trending />
+      </div>
+      <div class="col-md-6" id="movie">
+        <div> 
+          <h1 class="mov-title mt-3 text-right">Search Results</h1>
+          <div class="movies">
+            <div v-for="(movie, idMovie) in dataMovies" :key="idMovie" class="movie-list" @click="openDetail(movie)">
+              <img :src="`http://image.tmdb.org/t/p/w500${movie.poster_path}`">
+              <div class="mov-title">
+                {{ movie.title }} ({{ changeDate(movie.release_date) }})
+              </div>
+            </div>
+          </div>
+          <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">More</div>
         </div>
       </div>
     </div>
-    <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">More</div>
   </div>
+  
 </template>
 
 <script>
@@ -20,7 +30,8 @@ export default {
     return {
       apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
       dataMovies: [],
-      page: ''
+      page: '',
+      searchId: ''
     }
   },
   mounted() {
@@ -28,7 +39,8 @@ export default {
   },
   methods: {
     getDataMovies() {
-      axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${this.apiKey}&page=${this.page}`)
+      this.searchId = this.$route.params.id
+      axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${this.apiKey}&query=${this.searchId}&page=${this.page}`)
       .then(res => {
         this.dataMovies = res.data.results;
         this.page = res.data.page;
@@ -41,7 +53,7 @@ export default {
     },
     nextPage() {
       this.page = this.page+1;
-      axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${this.apiKey}&page=${this.page}`)
+      axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${this.apiKey}&query=${this.searchId}&page=${this.page}`)
       .then(res => {
         this.dataMovies = [...this.dataMovies, ...res.data.results];
         return this.dataMovies;

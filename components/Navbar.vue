@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class=" mr-5 ml-5 brand" href="/">movieTvNow</a>
+        <NuxtLink class=" mr-5 ml-5 brand" to="/">movieTvNow</NuxtLink>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -16,8 +16,8 @@
             </li>
           </ul>
           <form class="d-flex ml-auto">
-            <input class="form-control me-2" type="search" placeholder="Search movie/tv..." aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <input class="form-control me-2" type="search" placeholder="Search movie/tv..." v-model="search">
+            <button class="btn btn-outline-success" type="submit" @click="showResults()"><router-link to="`/search/${this.search}`">Search</router-link></button>
           </form>
         </div>
       </div>
@@ -27,7 +27,16 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      search: ''
+    }
+  },
+  methods: {
+    showResults() {
+      this.$router.push(`/search/${this.search}`) 
+    }
+  }
 }
 </script>
 
@@ -42,4 +51,11 @@ export default {
   text-decoration: none;
   color: rgb(35, 64, 90);
 }
+
+@media only screen and (max-width: 768px) {
+  .brand {
+    margin-left: 0 !important;
+  }
+}
+
 </style>

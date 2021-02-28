@@ -1,7 +1,7 @@
 <template>
   <div class="trending mt-3">
     <h3 class="text-center white">
-    Trending This Week
+      Trending This Week
     </h3>
     <hr class="bg-light">
     <div class="trend-mov">
@@ -9,7 +9,7 @@
       <div class="trend mb-2" v-for="(movie, idMovieTrend) in dataMovies.slice(0, 3)" :key="idMovieTrend" @click="openDetail(movie)">
         <img :src="`http://image.tmdb.org/t/p/w500${movie.poster_path}`">
         <div class="trend-title">
-        {{ movie.title }}
+          {{ movie.title }}
         </div>
         <div class="layer"></div>
       </div>
@@ -20,7 +20,7 @@
       <div class="trend mb-2" v-for="(tv, idTvTrend) in dataTv.slice(0, 3)" :key="idTvTrend" @click="openDetailTv(tv)">
         <img :src="`http://image.tmdb.org/t/p/w500${tv.poster_path}`">
         <div class="trend-title">
-        {{ tv.name }}
+          {{ tv.name }}
         </div>
         <div class="layer"></div>
       </div>
@@ -104,7 +104,6 @@ export default {
   height: 60px;
   background-color: black;
   opacity: 0.5;
-  /* border-radius: 10px 10px 0 0; */
 }
 
 .white {

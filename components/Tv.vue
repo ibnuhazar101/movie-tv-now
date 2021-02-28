@@ -1,5 +1,5 @@
 <template>
-  <div class=""> 
+  <div> 
     <h1 class="tv-title mt-3 text-right">Now Streaming</h1>
     <div class="tvs">
       <div v-for="(tv, idTv) in dataTv" :key="idTv" class="tv-list" @click="openDetail(tv)">
@@ -20,7 +20,7 @@ export default {
     return {
       apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
       dataTv: [],
-      page: 1
+      page: ''
     }
   },
   mounted() {
@@ -30,7 +30,6 @@ export default {
     getDataTv() {
       axios.get(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${this.apiKey}&page=${this.page}`)
       .then(res => {
-        console.log(res.data.page);
         this.dataTv = res.data.results;
         this.page = res.data.page;
       })
@@ -79,7 +78,6 @@ export default {
 
 .tv-title {
   color: white;
-  /* font-weight: bold; */
 }
 
 </style>

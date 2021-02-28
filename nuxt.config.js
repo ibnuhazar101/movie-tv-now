@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'movieDb',
+    title: 'movieTvNow',
     htmlAttrs: {
       lang: 'en'
     },
@@ -32,7 +32,10 @@ export default {
   plugins: [
   ],
 
-  router: { base: '/movie-tv-now' },
+  router: { 
+    base: '/movie-tv-now' 
+  },
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
