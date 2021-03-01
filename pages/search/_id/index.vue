@@ -11,7 +11,15 @@
             <div v-for="(movie, idMovie) in dataMovies" :key="idMovie" class="movie-list" @click="openDetail(movie)">
               <img :src="`http://image.tmdb.org/t/p/w500${movie.poster_path}`">
               <div class="mov-title">
-                {{ movie.title }} ({{ changeDate(movie.release_date) }})
+                <div v-if="movie.media_type == 'movie'">
+                  {{ movie.title }} ({{ changeDate(movie.release_date) }})
+                </div>
+                <div v-else-if="movie.media_type == 'tv'">
+                  {{ movie.name }}
+                </div>
+                <div v-else>
+                  NaN
+                </div>
               </div>
             </div>
           </div>
@@ -60,7 +68,12 @@ export default {
       })
     },
     openDetail(movie) {
-      this.$router.push(`/movie/${movie.id}`)
+      if (movie.media_type == 'movie') {
+        this.$router.push(`/movie/${movie.id}`)
+      }
+      else {
+        this.$router.push(`/tv/${movie.id}`)
+      }
     }
   }
 }

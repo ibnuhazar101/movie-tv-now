@@ -15,9 +15,9 @@
               <NuxtLink to="/tvShows" class="nav-link">TV Shows</NuxtLink>
             </li>
           </ul>
-          <form class="d-flex ml-auto">
+          <form @submit.prevent="" class="d-flex ml-auto">
             <input class="form-control me-2" type="search" placeholder="Search movie/tv..." v-model="search">
-            <button class="btn btn-outline-success" type="submit" @click="showResults()"><router-link to="`/search/${this.search}`">Search</router-link></button>
+            <button class="btn btn-outline-success" type="submit" @click="showResults()">Search</button>
           </form>
         </div>
       </div>
