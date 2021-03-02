@@ -9,46 +9,27 @@
         </div>
       </div>
     </div>
-    <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">More</div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
+  props: {
+    dataTv: {
+      type: Array,
+      default: []
+    },
+    page: Number
+  },
   data() {
     return {
-      apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
-      dataTv: [],
-      page: ''
     }
   },
-  mounted() {
-    this.getDataTv()
-  },
   methods: {
-    getDataTv() {
-      axios.get(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${this.apiKey}&page=${this.page}`)
-      .then(res => {
-        this.dataTv = res.data.results;
-        this.page = res.data.page;
-      })
-    },
     changeDate(date) {
       var d = new Date(date);
       var n = d.getFullYear();
       return n;
-    },
-    nextPage() {
-      this.page = this.page+1;
-      axios.get(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${this.apiKey}&page=${this.page}`)
-      .then(res => {
-        this.dataTv = [...this.dataTv, ...res.data.results];
-        return this.dataTv;
-      })
-    },
-    scrollBehavior() {
-        window.scrollTo(0,0);
     },
     openDetail(tv) {
       this.$router.push(`/tv/${tv.id}`)

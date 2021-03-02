@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="row justify-content-center">
-      <div class="col-md-3" id="trending">
-        <Trending />
-      </div>
       <div class="col-md-6" id="movie">
         <div> 
           <h1 class="mov-title mt-3 text-right">Search Results</h1>
@@ -23,7 +20,9 @@
               </div>
             </div>
           </div>
-          <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">More</div>
+          <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">
+            More
+          </div>
         </div>
       </div>
     </div>
@@ -53,6 +52,9 @@ export default {
         this.dataMovies = res.data.results;
         this.page = res.data.page;
       })
+      .catch(err => {
+        console.log(err);
+      })
     },
     changeDate(date) {
       var d = new Date(date);
@@ -65,6 +67,9 @@ export default {
       .then(res => {
         this.dataMovies = [...this.dataMovies, ...res.data.results];
         return this.dataMovies;
+      })
+      .catch(err => {
+        console.log(err);
       })
     },
     openDetail(movie) {

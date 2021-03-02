@@ -7,19 +7,21 @@
         </div>
         <div class="col-md-6">
           <h1 class="bold"> {{ dataTv.name }} </h1>
-          Last Release Date: <span class="bold">{{ dataTv.last_air_date }}</span><br>
-          Genre: 
-          <div v-for="(genre, idGenreTv) in dataTv.genres" :key="idGenreTv" class="d-inline bold"> {{ genre.name }},</div>-<br>
-          Episode Run Time:
-          <div v-for="(time, idTimeTv) in dataTv.episode_run_time" :key="idTimeTv" class="d-inline bold"> {{ time }}m,</div>-<br>
-          Last Season: <span class="bold">Season {{ dataTv.number_of_seasons }}</span><br>
+          <div class="info">
+            Last Release Date: <span class="bold">{{ dataTv.last_air_date }}</span><br>
+            Genre: <span class="bold">{{ setNames(dataTv.genres) }}-</span> <br>
+            Episode Run Time: <span class="bold">{{ setRunTime(dataTv.episode_run_time) }}- </span> <br>
+            Last Season: <span class="bold">Season {{ dataTv.number_of_seasons }}</span><br>
+          </div>
           <br>
-          <p>{{ dataTv.overview }}</p>
+          <div class="overview">
+            <p>{{ dataTv.overview }}</p>
+          </div>
           <hr>
-          Creator: 
-          <div v-for="(creator, idCreatorTv) in dataTv.created_by" :key="idCreatorTv" class="d-inline bold"> {{ creator.name }},</div>-<br>
-          Stars:
-          <div v-for="(stars, idStarsTv) in tvCast.slice(0, 10)" :key="idStarsTv" class="d-inline bold"> {{ stars.name }},</div>-<br>
+          <div class="cast">
+            Creator: <span class="bold"> {{ setNames(dataTv.created_by) }}- </span> <br>
+            Stars: <span class="bold"> {{ setNames(tvCast) }}- </span> 
+          </div>
           <hr>
         </div>
       </div>
@@ -40,8 +42,23 @@ export default {
   },
   mounted() {
     this.getDataTvs()
+    this.getDataCast()
   },
   methods: {
+    setNames(arrayNames) {
+      let names = ''
+      arrayNames && arrayNames.forEach(element => {
+        names += ` ${element.name},`
+      });
+      return names
+    },
+    setRunTime(arrayNames) {
+      let names = ''
+      arrayNames && arrayNames.forEach(element => {
+        names += ` ${element}m,`
+      });
+      return names
+    },
     getDataTvs() {
       this.tvId = this.$route.params.id
       axios.get(`https://api.themoviedb.org/3/tv/${this.tvId}?api_key=${this.apiKey}`)
@@ -50,16 +67,17 @@ export default {
       })
       .catch(err => {
         console.log(err);
-      }),
-
+      })
+    },
+    getDataCast() {
       axios.get(`https://api.themoviedb.org/3/tv/${this.tvId}/credits?api_key=${this.apiKey}`)
       .then(res => {
-        this.tvCast = res.data.cast
+        this.tvCast = res.data.cast.slice(0, 10)
       })
       .catch(err => {
         console.log(err);
       })
-    } 
+    }
   }
 }
 </script>

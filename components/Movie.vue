@@ -9,43 +9,27 @@
         </div>
       </div>
     </div>
-    <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">More</div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
+  props: {
+    dataMovies: {
+      type: Array,
+      default: []
+    },
+    page: Number
+  },
   data() {
     return {
-      apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
-      dataMovies: [],
-      page: ''
     }
   },
-  mounted() {
-    this.getDataMovies()
-  },
   methods: {
-    getDataMovies() {
-      axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${this.apiKey}&page=${this.page}`)
-      .then(res => {
-        this.dataMovies = res.data.results;
-        this.page = res.data.page;
-      })
-    },
     changeDate(date) {
       var d = new Date(date);
       var n = d.getFullYear();
       return n;
-    },
-    nextPage() {
-      this.page = this.page+1;
-      axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${this.apiKey}&page=${this.page}`)
-      .then(res => {
-        this.dataMovies = [...this.dataMovies, ...res.data.results];
-        return this.dataMovies;
-      })
     },
     openDetail(movie) {
       this.$router.push(`/movie/${movie.id}`)

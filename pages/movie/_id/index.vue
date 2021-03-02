@@ -1,5 +1,5 @@
 <template>
-  <div class="back mt-1">
+  <div class="back mt-1" v-if="dataMovies">
     <div class="container mt-3 mb-3">
       <div class="row justify-content-center">
         <div class="col-md-4">
@@ -7,17 +7,26 @@
         </div>
         <div class="col-md-6">
           <h1 class="bold"> {{ dataMovies.title }} </h1>
-          Release Date: <span class="bold">{{ dataMovies.release_date }}</span><br>
-          Genre: 
-          <div v-for="(genre, idGenreMovie) in dataMovies.genres" :key="idGenreMovie" class="d-inline bold"> {{ genre.name }},</div>-<br>
-          Run Time: <span class="bold">{{ dataMovies.runtime }}m</span> <br>
+          <div class="info">
+            Release Date: <span class="bold">{{ dataMovies.release_date }}</span><br>
+            Genre: <span class="bold">{{ setNames(dataMovies.genres) }}-</span> <br>
+            Run Time: <span class="bold">{{ dataMovies.runtime }}m</span> <br>
+          </div>
           <br>
-          <p>{{ dataMovies.overview }}</p>
+          <div class="overview">
+            <p>{{ dataMovies.overview }}</p>
+          </div>
           <hr>
-          Production Studio: <br>
-          <div v-for="(studio, idStudioMovie) in dataMovies.production_companies" :key="idStudioMovie" class="d-inline bold"> {{ studio.name }},</div>-<br>
-          Stars: <br>
-          <div v-for="(stars, idStarMovie) in creditCast.slice(0, 10)" :key="idStarMovie" class="d-inline bold"> {{ stars.name }},</div>-<br>
+          <div class="studio">
+            Production Studio:
+            <p class="bold">
+              {{ setNames(dataMovies.production_companies) }}-
+            </p>
+            Stars: <br>
+            <p class="bold">
+              {{ setNames(creditCast) }}-
+            </p>
+          </div>
           <hr>
         </div>
       </div>
@@ -38,21 +47,31 @@ export default {
   },
   mounted() {
     this.getDataMovies()
+    this.getCast()
   },
   methods: {
+    setNames(arrayNames) {
+      let names = ''
+      arrayNames && arrayNames.forEach(element => {
+        names += ` ${element.name},`
+      });
+      return names
+    },
     getDataMovies() {
       this.movieId = this.$route.params.id
       axios.get(`https://api.themoviedb.org/3/movie/${this.movieId}?api_key=${this.apiKey}`)
       .then(res => {
         this.dataMovies = res.data
+        console.log(this.dataMovies);
       })
       .catch(err => {
         console.log(err);
-      }),
-
+      })
+    },
+    getCast() {
       axios.get(`https://api.themoviedb.org/3/movie/${this.movieId}/credits?api_key=${this.apiKey}`)
       .then(res => {
-        this.creditCast = res.data.cast
+        this.creditCast = res.data.cast.slice(0, 10)
       })
       .catch(err => {
         console.log(err);
