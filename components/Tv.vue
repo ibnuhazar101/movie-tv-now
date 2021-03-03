@@ -32,7 +32,7 @@ export default {
       return n;
     },
     openDetail(tv) {
-      this.$router.push(`/tv/${tv.id}`)
+      this.$router.push(`/detail?type=tv&id=${tv.id}`)
     }
   }
 }

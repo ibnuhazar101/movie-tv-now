@@ -10,7 +10,7 @@
         <Movie 
           :dataMovies="Movies"
         />
-        <div class="d-block btn btn-light mt-3 mb-3" @click="nextPageMovie()">More</div>
+        <div class="d-block btn btn-light mt-3 mb-3" @click="setPage()">More</div>
       </div>
     </div>
   </div>
@@ -31,6 +31,11 @@ export default {
       tvId: ''
     }
   },
+  watch: {
+    page() {
+      this.getDataMovies()
+    }
+  },
   mounted() {
     this.getDataMovies()
     this.getTrendingMovie()
@@ -45,9 +50,8 @@ export default {
         console.log(err);
       })
     },
-    nextPageMovie() {
-      this.page = this.page+1
-      this.getDataMovies()
+    setPage() {
+      this.page += 1
     },
     getTrendingMovie() {
       axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${this.apiKey}`)
