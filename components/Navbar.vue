@@ -12,7 +12,7 @@
               <NuxtLink to="/" class="nav-link">Movies</NuxtLink>
             </li>
             <li class="nav-item">
-              <NuxtLink to="/tvShows" class="nav-link">TV Shows</NuxtLink>
+              <NuxtLink to="/tv-shows" class="nav-link">TV Shows</NuxtLink>
             </li>
           </ul>
           <form @submit.prevent="" class="d-flex ml-auto">
