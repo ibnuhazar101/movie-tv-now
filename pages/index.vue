@@ -26,56 +26,33 @@ export default {
       Movies: [],
       TrendingMovie: [],
       TrendingTv: [],
-      page: '',
+      page: 1,
       movieId: '',
       tvId: ''
     }
   },
   mounted() {
     this.getDataMovies()
-    this.getDataTrending('movie')
+    this.getTrendingMovie()
   },
   methods: {
     getDataMovies() {
       axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${this.apiKey}&page=${this.page}`)
       .then(res => {
-        this.Movies = res.data.results;
-        this.page = res.data.page;
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    },
-    getDataMoviesDetail() {
-      this.movieId = this.$route.params.id
-      axios.get(`https://api.themoviedb.org/3/movie/${this.movieId}?api_key=${this.apiKey}`)
-      .then(res => {
-        this.dataMovies = res.data
+        this.Movies = [...this.Movies, ...res.data.results]
       })
       .catch(err => {
         console.log(err);
       })
     },
     nextPageMovie() {
-      this.page = this.page+1;
-      axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${this.apiKey}&page=${this.page}`)
-      .then(res => {
-        this.Movies = [...this.Movies, ...res.data.results];
-        return this.Movies;
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      this.page = this.page+1
+      this.getDataMovies()
     },
-    getDataTrending(value) {
-      axios.get(`https://api.themoviedb.org/3/trending/${value}/week?api_key=${this.apiKey}`)
+    getTrendingMovie() {
+      axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${this.apiKey}`)
       .then(res => {
-        if (value == 'movie') {
-          this.TrendingMovie = res.data.results;
-        }
-        else if (value == 'tv') {
-          this.TrendingTv = res.data.results;
-        }
+        this.TrendingMovie = res.data.results;
       })
       .catch(err => {
         console.log(err);

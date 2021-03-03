@@ -25,47 +25,33 @@ export default {
   data() {
     return {
       apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
-      page: '',
+      page: 1,
       Tv: [],
-      TrendingMovie: [],
       TrendingTv: []
     }
   },
   mounted() {
     this.getDataTv()
-    this.getDataTrending('tv')
+    this.getTrendingTv()
   },
   methods: {
     getDataTv() {
       axios.get(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${this.apiKey}&page=${this.page}`)
       .then(res => {
-        this.Tv = res.data.results;
-        this.page = res.data.page;
+        this.Tv = [...this.Tv, ...res.data.results];
       })
       .catch(err => {
         console.log(err);
       })
     },
     nextPageTv() {
-      this.page = this.page+1;
-      axios.get(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${this.apiKey}&page=${this.page}`)
-      .then(res => {
-        this.Tv = [...this.Tv, ...res.data.results];
-        return this.Tv;
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      this.page = this.page+1
+      this.getDataTv()
     },
-    getDataTrending(value) {
-      axios.get(`https://api.themoviedb.org/3/trending/${value}/week?api_key=${this.apiKey}`)
+    getTrendingTv() {
+      axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${this.apiKey}`)
       .then(res => {
-        if (value == 'movie') {
-          this.TrendingMovie = res.data.results;
-        }
-        else if (value == 'tv') {
-          this.TrendingTv = res.data.results;
-        }
+        this.TrendingTv = res.data.results;
       })
       .catch(err => {
         console.log(err);
