@@ -3,8 +3,8 @@
     <h3 class="text-center white">
       Trending This Week
     </h3>
+    <hr class="bg-light">
     <div class="trend-mov" v-if="dataTrendingMovie.length > 0">
-      <hr class="bg-light">
       <div class="trend mb-2" v-for="(movie, idMovieTrend) in dataTrendingMovie.slice(0, 4)" :key="idMovieTrend" @click="openDetail(movie)">
         <img :src="`http://image.tmdb.org/t/p/w500${movie.poster_path}`">
         <div class="trend-title">
@@ -14,7 +14,6 @@
       </div>
     </div>
     <div class="trend-mov" v-if="dataTrendingTv.length > 0">
-      <hr class="bg-light">
       <div class="trend mb-2" v-for="(tv, idTvTrend) in dataTrendingTv.slice(0, 4)" :key="idTvTrend" @click="openDetailTv(tv)">
         <img :src="`http://image.tmdb.org/t/p/w500${tv.poster_path}`">
         <div class="trend-title">
@@ -49,10 +48,10 @@ export default {
       return n;
     },
     openDetail(movie) {
-      this.$router.push(`/movie/${movie.id}`)
+      this.$router.push(`/detail?type=movie&typeId=${movie.id}`)
     },
     openDetailTv(tv) {
-      this.$router.push(`/tv/${tv.id}`)
+      this.$router.push(`/detail?type=tv&typeId=${tv.id}`)
     }
   }
 }
@@ -99,6 +98,26 @@ export default {
 
 .white {
   color: white;
+}
+
+@media only screen and (max-width: 576px) {
+  .trend-mov {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .trend {
+    width: 45%;
+  }
+
+  .trend-title {
+    font-size: 16px;
+  }
+
+  .layer {
+    height: 50%;
+  }
 }
 
 </style>

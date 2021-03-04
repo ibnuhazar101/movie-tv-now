@@ -16,8 +16,8 @@
             </li>
           </ul>
           <form @submit.prevent="" class="d-flex ml-auto">
-            <input class="form-control me-2" type="search" placeholder="Search movie/tv..." v-model="search">
-            <button class="btn btn-outline-success" type="submit" @click="showResults()">Search</button>
+            <input class="form-control me-2" placeholder="Search movie/tv..." v-model="searchKey">
+            <button class="btn btn-outline-success" @click="getResults()" :key="searchId">Search</button>
           </form>
         </div>
       </div>
@@ -29,12 +29,12 @@
 export default {
   data() {
     return {
-      search: ''
+      searchKey: ''
     }
   },
   methods: {
-    showResults() {
-      this.$router.push(`/search/${this.search}`) 
+    getResults() {
+      this.$router.push(`/search?searchId=${this.searchKey}`) 
     }
   }
 }

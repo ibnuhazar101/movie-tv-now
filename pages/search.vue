@@ -1,18 +1,19 @@
 <template>
   <div>
+    
     <div class="row justify-content-center">
       <div class="col-md-6" id="movie">
         <div> 
           <h1 class="mov-title mt-3 text-right">Search Results</h1>
           <div class="movies">
-            <div v-for="(movie, idMovie) in dataMovies" :key="idMovie" class="movie-list" @click="openDetail(movie)">
-              <img :src="`http://image.tmdb.org/t/p/w500${movie.poster_path}`">
+            <div v-for="(content, id) in dataContents" :key="id" class="movie-list" @click="openDetail(content)">
+              <img :src="`http://image.tmdb.org/t/p/w500${content.poster_path}`">
               <div class="mov-title">
-                <div v-if="movie.media_type == 'movie'">
-                  {{ movie.title }} ({{ changeDate(movie.release_date) }})
+                <div v-if="content.media_type == 'movie'">
+                  {{ content.title }} ({{ changeDate(content.release_date) }})
                 </div>
-                <div v-else-if="movie.media_type == 'tv'">
-                  {{ movie.name }}
+                <div v-else-if="content.media_type == 'tv'">
+                  {{ content.name }}
                 </div>
                 <div v-else>
                   NaN
@@ -20,12 +21,13 @@
               </div>
             </div>
           </div>
-          <div class="d-block btn btn-light mt-3 mb-3" @click="nextPage()">
+          <div class="d-block btn btn-light mt-3 mb-3" @click="setPage()">
             More
           </div>
         </div>
       </div>
     </div>
+    
   </div>
   
 </template>
@@ -36,21 +38,31 @@ export default {
   data() {
     return {
       apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
-      dataMovies: [],
-      page: '',
+      dataContents: [],
+      page: 1,
       searchId: ''
     }
   },
-  mounted() {
-    this.getDataMovies()
+  watch: {
+    page() {
+      this.getDataContents()
+    },
+    $route(to, from) {
+      if(to !== from) {
+        location.reload();
+      }
+    }
+  },
+  beforeMount() {
+    this.searchId = this.$route.query.searchId
+    this.getDataContents()
   },
   methods: {
-    getDataMovies() {
-      this.searchId = this.$route.params.id
+    getDataContents() {
       axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${this.apiKey}&query=${this.searchId}&page=${this.page}`)
       .then(res => {
-        this.dataMovies = res.data.results;
-        this.page = res.data.page;
+        this.dataContents = [...this.dataContents, ...res.data.results]
+        return this.dataContents
       })
       .catch(err => {
         console.log(err);
@@ -61,24 +73,11 @@ export default {
       var n = d.getFullYear();
       return n;
     },
-    nextPage() {
-      this.page = this.page+1;
-      axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${this.apiKey}&query=${this.searchId}&page=${this.page}`)
-      .then(res => {
-        this.dataMovies = [...this.dataMovies, ...res.data.results];
-        return this.dataMovies;
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    setPage() {
+      this.page += 1;
     },
-    openDetail(movie) {
-      if (movie.media_type == 'movie') {
-        this.$router.push(`/movie/${movie.id}`)
-      }
-      else {
-        this.$router.push(`/tv/${movie.id}`)
-      }
+    openDetail(content) {
+        this.$router.push(`/detail?type=${content.media_type}&typeId=${content.id}`)
     }
   }
 }

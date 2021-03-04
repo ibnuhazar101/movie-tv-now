@@ -1,18 +1,20 @@
 <template>
   <div>
+
     <div class="row justify-content-center">
-      <div class="col-md-3" id="trending">
+      <div class="col-md-4 col-lg-3" id="trending">
         <Trending 
           :dataTrendingMovie="TrendingMovie"
         />
       </div>
-      <div class="col-md-6" id="movie">
-        <Movie 
+      <div class="col-md-7 col-lg-6" id="movie">
+        <ContentList 
           :dataMovies="Movies"
         />
         <div class="d-block btn btn-light mt-3 mb-3" @click="setPage()">More</div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -25,10 +27,8 @@ export default {
       apiKey: '6de3c0f0176c22fabe34c6be66fa8cae',
       Movies: [],
       TrendingMovie: [],
-      TrendingTv: [],
-      page: 1,
-      movieId: '',
-      tvId: ''
+      Search: [],
+      page: 1
     }
   },
   watch: {
@@ -71,7 +71,7 @@ body {
   background-color: rgb(26, 47, 66);
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 576px) {
   .row {
     display: flex;
     flex-direction: column;
