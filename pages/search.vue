@@ -9,10 +9,10 @@
             <div v-for="(content, id) in dataContents" :key="id" class="movie-list" @click="openDetail(content)">
               <img :src="`http://image.tmdb.org/t/p/w500${content.poster_path}`">
               <div class="mov-title">
-                <div v-if="content.media_type == 'movie'">
+                <div v-if="content.media_type === 'movie'">
                   {{ content.title }} ({{ changeDate(content.release_date) }})
                 </div>
-                <div v-else-if="content.media_type == 'tv'">
+                <div v-else-if="content.media_type === 'tv'">
                   {{ content.name }}
                 </div>
                 <div v-else>
@@ -48,8 +48,10 @@ export default {
       this.getDataContents()
     },
     $route(to, from) {
+      this.searchId = to.query.searchId
       if(to !== from) {
-        location.reload();
+        this.dataContents = []
+        this.getDataContents()
       }
     }
   },

@@ -17,7 +17,7 @@
           </ul>
           <form @submit.prevent="" class="d-flex ml-auto">
             <input class="form-control me-2" placeholder="Search movie/tv..." v-model="searchKey">
-            <button class="btn btn-outline-success" @click="getResults()" :key="searchId">Search</button>
+            <button class="btn btn-outline-success" @click="getResults()">Search</button>
           </form>
         </div>
       </div>
